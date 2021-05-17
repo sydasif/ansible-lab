@@ -9,6 +9,14 @@ nodes. SSH uses a username and password (root or sudo level) to change the confi
 of a remote device. For manage nodes, in the case of networking devices python
 is not required in all cases.
 
+### Control node requirement
+
+For the control node, you can use any machine with Python 2.7 or Python 3.5 (or higher) installed.
+
+### Managed node Requirement
+
+For managed nodes, Ansible makes a connection over SSH and Python.
+
 ### Requirements of lab
 
 1. Ubuntu installed in Vmware
@@ -20,7 +28,6 @@ is not required in all cases.
 1. Static IP addressing (best practice)
 2. Sudo level access
 3. Open ssh-server install on client
-
 
 ### Ad-hoc Commands
 
