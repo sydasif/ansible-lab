@@ -20,3 +20,16 @@ is not required in all cases.
 1. Static IP addressing (best practice)
 2. Sudo level access
 3. Open ssh-server install on client
+
+
+### Ad-hoc Commands
+
+Ad-hoc system interaction is powerful and useful too but
+some limitations exist. Some examples of ad-hoc commands are below:
+
+1. ansible all -a "uptime"
+2. ansible all -a "whoami"
+3. ansible all -b -a "whoami"
+
+If you do not specify the, -m (module), the default command
+module will run.
