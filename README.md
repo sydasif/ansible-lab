@@ -21,13 +21,13 @@ For managed nodes, Ansible makes a connection over SSH and Python.
 
 1. Ubuntu installed in Vmware
 2. Centos 7 installed in Vmware
-3. Centos 7 minimal in Vmware
+3. Centos 7 server (Desktop) in Vmware
 
 ### Ansible Client Configuration
 
-1. Static IP addressing (best practice)
-2. Sudo level access
-3. Open ssh-server install on client
+1. static IP addressing (best practice)
+2. sudo level access
+3. open ssh-server install on client
 
 ### Ad-hoc Commands
 
