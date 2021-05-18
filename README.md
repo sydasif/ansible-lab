@@ -28,15 +28,3 @@ For managed nodes, Ansible makes a connection over SSH and Python.
 1. static IP addressing (best practice)
 2. sudo level access
 3. open ssh-server install on client
-
-### Ad-hoc Commands
-
-Ad-hoc system interaction is powerful and useful too but
-some limitations exist. Some examples of ad-hoc commands are below:
-
-1. ansible all -a "uptime"
-2. ansible all -a "whoami"
-3. ansible all -b -a "whoami"
-
-If you do not specify the, -m (module), the default command
-module will run.
