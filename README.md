@@ -19,8 +19,8 @@ For managed nodes, Ansible makes a connection over SSH and Python.
 
 ### Requirements of lab
 
-1. Ubuntu installed in Vmware
-2. Centos 7 installed in Vmware
+1. Ubuntu 20 installed in Vmware
+2. Debian 10 installed in Vmware
 3. Centos 7 server (Desktop) in Vmware
 
 ### Ansible Client Configuration
