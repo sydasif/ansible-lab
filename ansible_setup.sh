@@ -1,4 +1,4 @@
-#INSTALL AND CONFIG
+##INSTALL AND CONFIG
 #Remove sudo when use in NetworkAutomation docker in GNS3
 sudo apt update
 sudo apt install software-properties-common
@@ -17,7 +17,7 @@ ansible localhost -m ping
 
 ######## PASSWORD LESS KEYS ###########
 #Create SSH key on ansible server and accept the defaults
-ssh-keygen -t rsa
+ssh-keygen -t rsa -b 2048
 sudo apt-get install openssh-server -y
 
 #Now copy the keys to your host
