@@ -1,5 +1,6 @@
 ######INSTALL AND CONFIG#######
-#Ansible installation
+
+# Ansible installation on ubuntu
 sudo apt update
 sudo apt install software-properties-common
 sudo apt-add-repository ppa:ansible/ansible
@@ -15,7 +16,7 @@ pip3 install ansible
 ansible --version
 ansible localhost -m ping
 
-#####ansible######
+##### ansible ######
 cd /etc/ansible
 
 ###### INVENTORY #######
