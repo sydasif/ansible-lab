@@ -40,5 +40,4 @@ Vagrant.configure(2) do |config|
       config.vm.network :private_network, ip: opts[:eth1]
     end
   end
-  config.vm.provision "shell", inline:"sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config"
 end
