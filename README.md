@@ -1,6 +1,6 @@
 # Ansible Client and Server Lab
 
-Ansible is an open-source, powerful, and simple tool for client-server and network device automation. Install Ansible on PC or laptop, no special server or workstation is required. The only requirement is Python and SSH to install on the control node. Ansible is agent-less, means nothing to install on a client only Python, and SSH are enable. Ansible every time use SSH what it does on manage nodes. For manage nodes, in the case of networking devices python is not required in all cases.
+Ansible is an open-source, powerful, and simple tool for client-server and network device automation. To Installing Ansible on PC or laptop, no special server or workstation is required. The only requirement is Python and SSH on the control node. Ansible is agent-less, means nothing to install on a client only Python installed and SSH is enable. Ansible every time use SSH, what it does on manage nodes. For manage nodes, in the case of networking devices python is not required in all cases.
 
 ## Ansible Installation
 
@@ -37,13 +37,17 @@ Create a directory where you want in your machine and copy my vagrant file from 
 
 ### To boot the vagrant devices
 
-```vagrant up```  will create and boot the below devices in my case
+```vagrant up```  will create and boot the below device's.
 
 1. ubuntu
 2. centos
 3. debian
 
-Use ```vagrant status```  command after booting to check the status of devices
+command after booting to check the status of devices
+
+```con 
+vagrant status
+```
 
 Use ```vagrant ssh ubuntu``` command to ssh into a device and check ping to other two devices.
 
