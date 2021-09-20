@@ -31,7 +31,7 @@ I'm using Vagrant for my lab set-up, the process is shown below.
 
 2. [Virtual box](https://www.virtualbox.org/wiki/Downloads) for Windows 10
 
-3. [Vagrant file]()
+3. [Vagrant file](https://github.com/sydasif/ansible-lab/blob/master/Vagrantfile)
 
 Create a directory where you want in your machine and copy my vagrant file from the repo. In my case I, create a directory in Document named vagrant (name can anything). Open powershell and navigate to the concern directory.
 
