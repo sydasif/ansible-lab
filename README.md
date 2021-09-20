@@ -122,3 +122,37 @@ Go to bottom of file and add this line as below:
 ```con
 vagrant ALL=(ALL) NOPASSWD: ALL
 ```
+
+### Inventory Set Up
+
+I'm creating inventory in the ansible default location
+
+```con
+sudo nano /etc/ansible/hosts
+```
+
+Create groups and add host to the group.
+
+```con
+[deb]
+debian  
+
+[cent]
+centos
+```
+
+At this point my lab setup is complete.
+
+### Adhoc command to check connection
+
+```con
+ansible -m ping all
+ansible -m raw -a '/usr/bin/uptime' all
+ansible all -a 'whoami'
+```
+
+Elevate to root with -b for become. Why? Because ansible doesn't elevate the sudo privilege by default.
+
+```con
+ansible all -b -a 'whoami'
+```
