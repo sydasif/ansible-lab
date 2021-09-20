@@ -67,3 +67,58 @@ pip3 install ansible
 ```ansible --version
 ansible localhost -m ping
 ```
+
+### Configuring Ansible Client
+
+We Have three linux hosts ubuntu, centos and debian, on control node (ubuntu) edit hosts file for IP to name resolution.
+
+```con
+sudo nano /etc/hosts
+```
+
+After opening the file add below IP and host-name.
+
+```con
+192.168.200.10  centos
+192.168.200.12  debian
+```
+
+Create SSH key on ansible control node (ubuntu) and accept the defaults.
+
+```con
+ssh-keygen
+```
+
+list the keys to verify with *ls .ssh* command, and copy the key to the clients machine.
+
+```con
+ssh-copy-id -i .ssh/id_rsa.pub debian
+ssh-copy-id -i .ssh/id_rsa.pub centos
+```
+
+Now ssh to debian and configure debian so that it doesn't require a password to get sudo level access.
+
+```con
+ssh debian
+sudo visudo
+```
+
+Go to bottom of file and add this line as below:
+
+```con
+vagrant ALL=(ALL) NOPASSWD: ALL
+```
+
+Now configure centos so that it doesn't require a password to get root level access.
+
+```con
+ssh centos
+su - 
+sudo visudo
+```
+
+Go to bottom of file and add this line as below:
+
+```con
+vagrant ALL=(ALL) NOPASSWD: ALL
+```
