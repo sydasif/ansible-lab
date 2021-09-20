@@ -43,6 +43,27 @@ Create a directory where you want in your machine and copy my vagrant file from 
 2. centos
 3. debian
 
-```vagrant status```  after booting check the status of devices
+Use ```vagrant status```  command after booting to check the status of devices
 
-use ```vagrant ssh ubuntu``` command to ssh into device and ping other two device.
+Use ```vagrant ssh ubuntu``` command to ssh into a device and check ping to other two devices.
+
+### Ansible installation on ubuntu vagrant box
+
+```sudo apt update
+sudo apt install software-properties-common
+sudo apt-add-repository ppa:ansible/ansible-2.9
+sudo apt install ansible -y
+```
+
+### Installing Ansible with pip
+
+```sudo apt-get update
+sudo apt-get install python3 python3-pip git
+pip3 install ansible
+```
+
+### confirm working by running below commands
+
+```ansible --version
+ansible localhost -m ping
+```
