@@ -39,7 +39,7 @@ Create a directory where you want it in your machine and copy vagrant file from 
 
 Command after booting to check the status of devices
 
-```con 
+```con
 vagrant status
 ```
 
@@ -64,7 +64,7 @@ pip3 install ansible
 
 ### Confirm working by running below commands
 
-```con 
+```con
 ansible --version
 ansible localhost -m ping
 ```
@@ -126,7 +126,7 @@ vagrant ALL=(ALL) NOPASSWD: ALL
 
 ### Inventory Set Up
 
-I'm creating inventory in the ansible default location.
+Ansible inventory files define managed nodes that ad-hoc/playbooks can be run against. I'm creating inventory in the ansible default location (/etc/ansible/hosts).
 
 ```con
 sudo nano /etc/ansible/hosts
@@ -138,8 +138,12 @@ Create groups and add hosts to the group.
 [deb]
 debian  
 
-[cent]
+[cen]
 centos
+
+[linux:children]
+deb
+cen
 ```
 
 At this point my lab setup is complete.
@@ -147,8 +151,6 @@ At this point my lab setup is complete.
 ### [Introduction to ad hoc commands](https://docs.ansible.com/ansible/latest/user_guide/intro_adhoc.html)
 
 An Ansible ad hoc command is a command-line tool to automate a single task on one or more managed nodes. Ad hoc commands are quick and easy, but they are not reusable. Ad hoc commands demonstrate the simplicity and power of Ansible. Ad-hoc system interaction is a powerful and useful tool but some limitations exist.
-
-**Ad-hoc command to check Ansible is working**
 
 ```con
 ansible -m ping all
@@ -169,12 +171,9 @@ Some examples of ad-hoc commands are below:
 
 If you do not specify the, ***-m (module)***, the default ***command*** module will run.
 
-```com 
+```com
 ansible all -m command -a 'echo Ansible is fun'
 
-[WARNING]: Platform linux on host debian is using the discovered Python interpreter at /usr/bin/python, but future installation of
-another Python interpreter could change this. See
-https://docs.ansible.com/ansible/2.9/reference_appendices/interpreter_discovery.html for more information.
 debian | CHANGED | rc=0 >>
 Ansible is fun
 centos | CHANGED | rc=0 >>
@@ -187,7 +186,42 @@ It’s a basic command, but a little to explain, the command does the following:
 
 • The -m option is then provided to allow us to specify a module we can use.
 
-• Finally, we specify the -a option allows us to provide arguments to the shell module, 
+• Finally, we specify the -a option allows us to provide arguments to the shell module,
 we are simply running an echo command to print the output “Ansible is fun”
 
 If I, remove the ***-m command*** from the above ad-hoc command it will also work, because ansible uses the ***command*** module by default.
+
+### Modules
+
+Modules are like the different tools, discrete units of code happen in ansible. Modules are invoked with tasks in playbooks or with the ansible ad hoc command -m argument.
+
+*command* The command will not be processed through the shell. Don't support pipes and redirects. After running the below command if you check the managed node home directory to see the hello.txt file, it will not create the file.
+
+```com
+ansible all -b -m command -a 'echo "Hello" > /home/vagrant/hello.txt'
+
+debian | CHANGED | rc=0 >>
+Hello > /root/hello.txt
+centos | CHANGED | rc=0 >>
+Hello > /root/hello.txt
+```
+
+***shell*** It is almost exactly like the command module but runs the command through a shell (/bin/sh) on the remote node. Support pips and redirection. After running the below command the hello.txt file is created.
+
+```com
+ansible all -m shell -a 'echo "Hello" > /home/vagrant/hello.txt'
+
+debian | CHANGED | rc=0 >>
+
+centos | CHANGED | rc=0 >>
+```
+
+```com
+vagrant@ubuntu:~$ ssh centos
+Last login: Tue Sep 21 06:15:04 2021 from 192.168.200.11
+[vagrant@centos ~]$ ls
+hello.txt
+[vagrant@centos ~]$
+```
+
+***raw*** raw module use SSH to executes commands on remote devices and doesn't require python, we use the raw module, for example, any devices such as routers that do not have any Python installed.
