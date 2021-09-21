@@ -224,4 +224,24 @@ hello.txt
 [vagrant@centos ~]$
 ```
 
-***raw*** raw module use SSH to executes commands on remote devices and doesn't require python, we use the raw module, for example, any devices such as routers that do not have any Python installed.
+***raw*** raw module use SSH to executes commands on remote devices and doesn't require python, we use the raw module, for example, any devices such as routers that do not have any Python installed. It also Support pips and redirection.
+
+```con
+ansible all -m raw -a 'echo "Hello" >> /home/vagrant/hello.txt'
+debian | CHANGED | rc=0 >>
+Shared connection to debian closed.
+
+centos | CHANGED | rc=0 >>
+Shared connection to centos closed.
+```
+
+```con
+vagrant@ubuntu:~$ ssh centos
+Last login: Tue Sep 21 06:40:27 2021 from 192.168.200.11
+[vagrant@centos ~]$ ls
+hello.txt
+[vagrant@centos ~]$ cat hello.txt
+Hello
+Hello
+[vagrant@centos ~]$
+```
