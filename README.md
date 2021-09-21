@@ -144,11 +144,14 @@ centos
 
 At this point my lab setup is complete.
 
-### Adhoc command to check connection
+### [Introduction to ad hoc commands](https://docs.ansible.com/ansible/latest/user_guide/intro_adhoc.html)
+
+An Ansible ad hoc command is a command-line tool to automate a single task on one or more managed nodes. Ad hoc commands are quick and easy, but they are not reusable. Ad hoc commands demonstrate the simplicity and power of Ansible. Ad-hoc system interaction is a powerful and useful tool but some limitations exist.
+
+**Ad-hoc command to check Ansible is working**
 
 ```con
 ansible -m ping all
-ansible -m raw -a '/usr/bin/uptime' all
 ansible all -a 'whoami'
 ```
 
@@ -158,20 +161,23 @@ Elevate to root with -b for become. Why? Because Ansible doesn't elevate the sud
 ansible all -b -a 'whoami'
 ```
 
-Ad-hoc system interaction is a powerful and useful tool but some limitations exist. Some examples of ad-hoc commands are below:
+Some examples of ad-hoc commands are below:
 
 1. ansible all -a "uptime"
 2. ansible all -a "whoami"
 3. ansible all -b -a "whoami"
 
-If you do not specify the, -m (module), the default *command* module will run.
+If you do not specify the, ***-m (module)***, the default ***command*** module will run.
 
-### Explanation of Ad-hoc command
+```com 
+ansible all -m command -a 'echo Ansible is fun'
 
-```con
-ansible all -i "localhost," -m shell -a 'echo Ansible is fun'
-
-localhost | SUCCESS | rc=0 >>
+[WARNING]: Platform linux on host debian is using the discovered Python interpreter at /usr/bin/python, but future installation of
+another Python interpreter could change this. See
+https://docs.ansible.com/ansible/2.9/reference_appendices/interpreter_discovery.html for more information.
+debian | CHANGED | rc=0 >>
+Ansible is fun
+centos | CHANGED | rc=0 >>
 Ansible is fun
 ```
 
@@ -179,10 +185,9 @@ It’s a basic command, but a little to explain, the command does the following:
 
 • First, we specify all, so the command will be run across all the inventory we list.
 
-• We then make a list of inventory with the -i option, but we only have our localhost listed,
-so this will be the only host the ansible command is run over.
-
 • The -m option is then provided to allow us to specify a module we can use.
 
-• Finally, we specify the -a option allows us to provide arguments to the shell module,
+• Finally, we specify the -a option allows us to provide arguments to the shell module, 
 we are simply running an echo command to print the output “Ansible is fun”
+
+If I, remove the ***-m command*** from the above ad-hoc command it will also work, because ansible uses the ***command*** module by default.
