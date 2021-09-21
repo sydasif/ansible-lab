@@ -245,3 +245,68 @@ Hello
 Hello
 [vagrant@centos ~]$
 ```
+
+### Playbook
+
+A playbook defines a list of 'tasks' that will be executed against managed nodes. Each playbook contains one or more tasks which will be executed against the defined hosts group. Playbooks are written in [YAML](https://yaml.org/) which is an easy to read and write key/value data serialization language. Example as below:
+
+```yaml
+---
+- name: PLAYBOOK-1        
+  hosts: linux
+  tasks:
+    - name: A UNAME???
+      shell: uname -a > /home/vagrant/res.txt
+
+    - name: A WHOAMI???
+      shell: whoami >> /home/vagrant/res.txt
+```
+
+```JSON
+ansible-playbook playbook-1.yaml
+
+PLAY [linux] ************************************************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************************************
+ok: [centos]
+ok: [debian]
+
+TASK [A UNAME???] *******************************************************************************************************************
+changed: [debian]
+changed: [centos]
+
+TASK [A WHOAMI???] ******************************************************************************************************************
+changed: [debian]
+changed: [centos]
+
+PLAY RECAP **************************************************************************************************************************
+centos                     : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+debian                     : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+
+```yaml
+---
+- name: PLAYBOOK-2
+  hosts: linux
+  tasks:
+    - name: REMOVE RES.TXT???
+      file: path=/home/vagrant/res.txt state=absent
+```
+
+```JSON
+ansible-playbook playbook-2.yaml
+
+PLAY [linux] ************************************************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************************************
+ok: [debian]
+ok: [centos]
+
+TASK [REMOVE RES.TXT???] *******************************************************************************************************************
+changed: [debian]
+changed: [centos]
+
+PLAY RECAP **************************************************************************************************************************
+centos                     : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+debian                     : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
