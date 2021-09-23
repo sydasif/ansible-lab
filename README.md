@@ -248,7 +248,27 @@ Hello
 
 ### Playbook
 
-A playbook defines a list of 'tasks' that will be executed against managed nodes. Each playbook contains one or more tasks which will be executed against the defined hosts group. Playbooks are written in [YAML](https://yaml.org/) which is an easy to read and write key/value data serialization language. Example as below:
+A playbook defines a list of 'tasks' that will be executed against managed nodes. Each playbook contains one or more tasks which will be executed against the defined hosts group. Playbooks are written in [YAML](https://yaml.org/) which is an easy to read and write key/value data serialization language. YAML basic data types syntax as below:
+
+```yaml
+# scalars/variables
+max_retry: 10
+database: user
+
+# mapping/dictionary
+animals:
+  name: cat
+  age: 4
+  
+# sequence/list
+employee:
+  - age: 26
+    name: Joe
+  - age: 34
+    name: Tim    
+```  
+
+### Playbook Examples
 
 ```yaml
 ---
