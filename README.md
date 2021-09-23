@@ -330,3 +330,47 @@ PLAY RECAP *********************************************************************
 centos                     : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 debian                     : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
+
+```yaml
+---
+- hosts: linux
+  vars:
+    - my_var: some thing
+  tasks:
+    - name: print on terminal
+      command: echo "I want to print {{ my_var }} on screen"
+      register: result
+
+    - name: show result
+      debug: msg={{ result.stdout_lines }}
+```
+
+```JSON
+ansible-playbook playbook-3.yml
+
+PLAY [linux] ************************************************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************************************
+ok: [ubuntu]
+ok: [centos]
+
+TASK [print on terminal] ************************************************************************************************************
+changed: [ubuntu]
+changed: [centos]
+
+TASK [show result] ******************************************************************************************************************
+ok: [ubuntu] => {
+    "msg": [
+        "I want to print some thing on screen"
+    ]
+}
+ok: [centos] => {
+    "msg": [
+        "I want to print some thing on screen"
+    ]
+}
+
+PLAY RECAP **************************************************************************************************************************
+centos                     : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+ubuntu                     : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
