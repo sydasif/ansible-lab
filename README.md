@@ -1,6 +1,6 @@
 # Ansible Client and Server Lab
 
-Ansible is an open-source, powerful, and simple tool for client-server and network device automation. To Installing Ansible, no special server or workstation is required. The only requirement is Python and SSH installed on the control node. Ansible is agent-less, which means nothing to install on a client only Python is installed and SSH is enabled. Ansible every time use SSH, what it does on manage nodes. For manage nodes, in the case of networking devices python is not required in all cases.
+Ansible is an open-source, powerful, and simple tool for client-server and network device automation. To Installing Ansible, no special server or workstation is required. The only requirement is Python and SSH installed on the control node. Ansible is agent-less, which means nothing to install on a client only Python is installed and SSH is enabled. Ansible every time use SSH or paramiko, what it does on manage nodes. For manage nodes, in the case of networking devices python is not required in all cases.
 
 ## Ansible Installation
 
@@ -12,20 +12,20 @@ For the control node, you can use any machine with Python 2.7 or Python 3.5 (or 
 
 For managed nodes, Ansible makes a connection over SSH, Python and SSH is required.
 
-### Requirements of lab
+### Requirements of this lab
 
 1. VMware or Virtual box
 2. Vagrant
 
-### Lab Set up in Windows 10
+### Lab Set up on Windows 10
 
-I'm using Vagrant for my lab set-up, the process is shown below.
+I'm using Vagrant for my lab set-up, the process is simple as below.
 
-1. Go to the [Vagrant](https://www.vagrantup.com/) website and download vagrant and install it on your machine. For more details see [Quick Start Guide](https://learn.hashicorp.com/tutorials/vagrant/getting-started-index?in=vagrant/getting-started) on website.
+1. Go to the [Vagrant website](https://www.vagrantup.com/) and download vagrant and install it on your machine. For more details see [Quick Start Guide](https://learn.hashicorp.com/tutorials/vagrant/getting-started-index?in=vagrant/getting-started).
 
 2. [Virtual box](https://www.virtualbox.org/wiki/Downloads) for Windows 10.
 
-3. [Vagrant file](https://github.com/sydasif/ansible-lab/blob/master/Vagrantfile) from github repo.
+3. [Vagrant file](https://github.com/sydasif/ansible-lab/blob/master/Vagrantfile).
 
 Create a directory where you want it in your machine and copy vagrant file from the repo. In my case, I, create a directory in Document named vagrant (name can be anything). Open Powershell and navigate to the concerning directory.
 
@@ -39,7 +39,7 @@ Create a directory where you want it in your machine and copy vagrant file from 
 
 Command after booting to check the status of devices
 
-```con
+```console
 vagrant status
 ```
 
@@ -47,7 +47,7 @@ Use ```vagrant ssh ubuntu``` command to ssh into a device and check ping to othe
 
 ### Ansible installation on ubuntu vagrant box
 
-```con
+```console
 sudo apt update
 sudo apt install software-properties-common
 sudo apt-add-repository ppa:ansible/ansible-2.9
@@ -56,7 +56,7 @@ sudo apt install ansible -y
 
 ### Installing Ansible with pip
 
-```con
+```console
 sudo apt update
 sudo apt install python3 python3-pip git
 pip3 install ansible
@@ -64,7 +64,7 @@ pip3 install ansible
 
 ### Confirm working by running below commands
 
-```con
+```console
 ansible --version
 ansible localhost -m ping
 ```
@@ -73,46 +73,46 @@ ansible localhost -m ping
 
 I have three Linux hosts ubuntu, centos and debian. On the control node (ubuntu) edit hosts file for ip to name resolution.
 
-```con
+```console
 sudo nano /etc/hosts
 ```
 
 After opening the file add below IP and host-name.
 
-```con
+```console
 192.168.200.10  centos
 192.168.200.12  debian
 ```
 
 Create SSH key on ansible control node (ubuntu) and accept the defaults.
 
-```con
+```console
 ssh-keygen
 ```
 
 list the keys to verify with the *ls .ssh* command, and copy the key to the client's machine.
 
-```con
+```console
 ssh-copy-id -i .ssh/id_rsa.pub debian
 ssh-copy-id -i .ssh/id_rsa.pub centos
 ```
 
 Now ssh to debian and configure debian so that it doesn't require a password to get sudo level access.
 
-```con
+```console
 ssh debian
 sudo visudo
 ```
 
 Go to the bottom of the file and add this line as below:
 
-```con
+```console
 vagrant ALL=(ALL) NOPASSWD: ALL
 ```
 
 Now configure centos so that it doesn't require a password to get root-level access.
 
-```con
+```console
 ssh centos
 su - 
 sudo visudo
@@ -120,7 +120,7 @@ sudo visudo
 
 Go to the bottom of the file and add this line as below:
 
-```con
+```console
 vagrant ALL=(ALL) NOPASSWD: ALL
 ```
 
@@ -128,13 +128,13 @@ vagrant ALL=(ALL) NOPASSWD: ALL
 
 Ansible inventory files define managed nodes that ad-hoc/playbooks can be run against. I'm creating inventory in the ansible default location (/etc/ansible/hosts).
 
-```con
+```console
 sudo nano /etc/ansible/hosts
 ```
 
 Create groups and add hosts to the group.
 
-```con
+```console
 [deb]
 debian  
 
@@ -152,14 +152,14 @@ At this point my lab setup is complete.
 
 An Ansible ad hoc command is a command-line tool to automate a single task on one or more managed nodes. Ad hoc commands are quick and easy, but they are not reusable. Ad hoc commands demonstrate the simplicity and power of Ansible. Ad-hoc system interaction is a powerful and useful tool but some limitations exist.
 
-```con
+```console
 ansible -m ping all
 ansible all -a 'whoami'
 ```
 
 Elevate to root with -b for become. Why? Because Ansible doesn't elevate the sudo privilege by default.
 
-```con
+```console
 ansible all -b -a 'whoami'
 ```
 
@@ -171,7 +171,7 @@ Some examples of ad-hoc commands are below:
 
 If you do not specify the, ***-m (module)***, the default ***command*** module will run.
 
-```com
+```console
 ansible all -m command -a 'echo Ansible is fun'
 
 debian | CHANGED | rc=0 >>
@@ -197,7 +197,7 @@ Modules are like the different tools, discrete units of code happen in ansible. 
 
 *command* The command will not be processed through the shell. Don't support pipes and redirects. After running the below command if you check the managed node home directory to see the hello.txt file, it will not create the file.
 
-```com
+```console
 ansible all -b -m command -a 'echo "Hello" > /home/vagrant/hello.txt'
 
 debian | CHANGED | rc=0 >>
@@ -208,7 +208,7 @@ Hello > /root/hello.txt
 
 ***shell*** It is almost exactly like the command module but runs the command through a shell (/bin/sh) on the remote node. Support pips and redirection. After running the below command the hello.txt file is created.
 
-```com
+```console
 ansible all -m shell -a 'echo "Hello" > /home/vagrant/hello.txt'
 
 debian | CHANGED | rc=0 >>
@@ -216,7 +216,7 @@ debian | CHANGED | rc=0 >>
 centos | CHANGED | rc=0 >>
 ```
 
-```com
+```console
 vagrant@ubuntu:~$ ssh centos
 Last login: Tue Sep 21 06:15:04 2021 from 192.168.200.11
 [vagrant@centos ~]$ ls
@@ -226,7 +226,7 @@ hello.txt
 
 ***raw*** raw module use SSH to executes commands on remote devices and doesn't require python, we use the raw module, for example, any devices such as routers that do not have any Python installed. It also Support pips and redirection.
 
-```con
+```console
 ansible all -m raw -a 'echo "Hello" >> /home/vagrant/hello.txt'
 debian | CHANGED | rc=0 >>
 Shared connection to debian closed.
@@ -235,7 +235,7 @@ centos | CHANGED | rc=0 >>
 Shared connection to centos closed.
 ```
 
-```con
+```console
 vagrant@ubuntu:~$ ssh centos
 Last login: Tue Sep 21 06:40:27 2021 from 192.168.200.11
 [vagrant@centos ~]$ ls
