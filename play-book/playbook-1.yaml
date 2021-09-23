@@ -1,0 +1,9 @@
+---
+- name: PLAYBOOK-1        
+  hosts: linux
+  tasks:
+    - name: A UNAME???
+      shell: uname -a > /home/vagrant/res.txt
+
+    - name: A WHOAMI???
+      shell: whoami >> /home/vagrant/res.txt
