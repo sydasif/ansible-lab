@@ -62,7 +62,7 @@ sudo apt install python3 python3-pip git
 pip3 install ansible
 ```
 
-### Confirm working by running below commands
+### Testing Installation by running below commands
 
 ```console
 ansible --version
@@ -244,6 +244,72 @@ hello.txt
 Hello
 Hello
 [vagrant@centos ~]$
+```
+
+### Ansible Modules Documentation
+
+If you want to how to use a specific module, then you can check with ***ansible-doc*** command followed by a module name.
+
+```console
+vagrant@ubuntu:~$ ansible-doc ping
+
+> PING    (/path/to/module/lib/python3.8/site-packages/ansible/modules/system/ping.py)
+
+        A trivial test module, this module always returns `pong' on successful contact. It does
+        not make sense in playbooks, but it is useful from `/usr/bin/ansible' to verify the
+        ability to login and that a usable Python is configured. This is NOT ICMP ping, this is
+        just a trivial test module that requires Python on the remote-node. For Windows targets,
+        use the [win_ping] module instead. For Network targets, use the [net_ping] module
+        instead.
+
+  * This module is maintained by The Ansible Core Team
+OPTIONS (= is mandatory):
+
+- data
+        Data to return for the `ping' return value.
+        If this parameter is set to `crash', the module will cause an exception.
+        [Default: pong]
+        type: str
+
+
+SEE ALSO:
+      * Module net_ping
+           The official documentation on the net_ping module.
+           https://docs.ansible.com/ansible/2.9/modules/net_ping_module.html
+      * Module win_ping
+           The official documentation on the win_ping module.
+           https://docs.ansible.com/ansible/2.9/modules/win_ping_module.html
+
+
+AUTHOR: Ansible Core Team, Michael DeHaan
+        METADATA:
+          status:
+          - stableinterface
+          supported_by: core
+
+
+EXAMPLES:
+
+# Test we can logon to 'webservers' and execute python with json lib.
+# ansible webservers -m ping
+
+# Example from an Ansible Playbook
+- ping:
+
+# Induce an exception to see what happens
+- ping:
+    data: crash
+
+
+RETURN VALUES:
+
+ping:
+    description: value provided with the data parameter
+    returned: success
+    type: str
+    sample: pong
+
+(END)
 ```
 
 ### Playbook
