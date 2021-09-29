@@ -224,7 +224,7 @@ hello.txt
 [vagrant@centos ~]$
 ```
 
-***raw*** raw module use SSH to executes commands on remote devices and doesn't require python, we use the raw module, for example, any devices such as routers that do not have any Python installed. It also Support pips and redirection.
+***raw*** The raw module use SSH to executes commands on remote devices and doesn't require python, we use the raw module, for example, any devices such as routers that do not have any Python installed. It also Support pips and redirection.
 
 ```console
 ansible all -m raw -a 'echo "Hello" >> /home/vagrant/hello.txt'
@@ -439,4 +439,54 @@ ok: [centos] => {
 PLAY RECAP **************************************************************************************************************************
 centos                     : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ubuntu                     : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+
+### Running Multiple Plays
+
+A playbook can have multiple plays and each play can in turn contains multiple tasks.
+
+```yml
+---
+- name: Play-1.... 
+  hosts: ubuntu
+  become: true
+  tasks: 
+    - name: Install git on ubuntu
+      apt:
+        name: git
+        state: present
+
+
+- name: Play-2....
+  hosts: centos
+  become: true
+  tasks:
+    - name: Install git on centos
+      yum:
+        name: git
+        state: present
+```
+
+```JSON
+ansible-playbook playbook-4.yml
+
+PLAY [Play-1....] *****************************************************************************************************
+
+TASK [Gathering Facts] ************************************************************************************************
+ok: [ubuntu-64]
+
+TASK [Install git on ubuntu] ******************************************************************************************
+ok: [ubuntu-64]
+
+PLAY [Play-2....] *****************************************************************************************************
+
+TASK [Gathering Facts] ************************************************************************************************
+ok: [centos-7]
+
+TASK [Install git on centos] ******************************************************************************************
+ok: [centos-7]
+
+PLAY RECAP ************************************************************************************************************
+centos-7                   : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+ubuntu-64                  : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
