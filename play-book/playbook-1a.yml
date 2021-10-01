@@ -1,0 +1,14 @@
+---
+- name: PLAYBOOK-1        
+  hosts: linux
+  tasks:
+    - name: A UNAME???
+      command: cat /home/vagrant/res.txt
+      register: output
+
+    - name: A WHOAMI???
+      command: cat /home/vagrant/res.txt
+
+    - name: show output
+      debug: 
+        msg: "{{ output.stdout_lines }}"
