@@ -8,7 +8,7 @@ Ansible is an open-source, powerful, and simple tool for client-server and netwo
 
 For the control node, you can use any machine with Python 2.7 or Python 3.5 (or higher) installed. The Ansible installation is simple and depends on the OS of your control node, see [Ansible document](https://docs.ansible.com/ansible/2.9/installation_guide/index.html) for installation.
 
-### Managed node Requirement
+### Managed node requirement
 
 For managed nodes, Ansible makes a connection over SSH, Python and SSH is required.
 
@@ -17,9 +17,9 @@ For managed nodes, Ansible makes a connection over SSH, Python and SSH is requir
 1. VMware or Virtual box
 2. Vagrant
 
-### Lab Set up on Windows 10
+### Lab set-up on Windows 10
 
-I'm using Vagrant for my lab set-up, the process is simple as below.
+I'm using Vagrant for my lab set-up, the process is simple as below:
 
 1. Go to the [Vagrant website](https://www.vagrantup.com/) and download vagrant and install it on your machine. For more details see [Quick Start Guide](https://learn.hashicorp.com/tutorials/vagrant/getting-started-index?in=vagrant/getting-started).
 
@@ -27,17 +27,17 @@ I'm using Vagrant for my lab set-up, the process is simple as below.
 
 3. [Vagrant file](https://github.com/sydasif/ansible-lab/blob/master/Vagrantfile).
 
-Create a directory where you want it in your machine and copy vagrant file from the repo. In my case, I, create a directory in Document named vagrant (name can be anything). Open Powershell and navigate to the concerning directory.
+Create a directory where you want it in your machine and copy the vagrant file from the repo. In my case, I, create a directory in Document named vagrant (name can be anything). Open Powershell and navigate to the concerning directory.
 
 ### To boot the vagrant devices
 
-```vagrant up```  will create and boot the below device's.
+```vagrant up``` will create and boot the below device's.
 
 1. ubuntu
 2. centos
 3. debian
 
-Command after booting to check the status of devices
+Command after booting to check the status of devices:
 
 ```console
 vagrant status
@@ -45,7 +45,7 @@ vagrant status
 
 Use ```vagrant ssh ubuntu``` command to ssh into a device and check ping to other two devices.
 
-### Ansible installation on ubuntu vagrant box
+### Ansible installation on ubuntu
 
 ```console
 sudo apt update
@@ -62,7 +62,7 @@ sudo apt install python3 python3-pip git
 pip3 install ansible
 ```
 
-### Testing Installation by running below commands
+To test Ansible Installation by running the below commands:
 
 ```console
 ansible --version
@@ -71,7 +71,7 @@ ansible localhost -m ping
 
 ### Configuring Ansible Client
 
-I have three Linux hosts ubuntu, centos and debian. On the control node (ubuntu) edit hosts file for ip to name resolution.
+I have three Linux hosts ubuntu, centos and debian. On the control node (ubuntu), edit the host's file for IP to name resolution.
 
 ```console
 sudo nano /etc/hosts
@@ -84,7 +84,7 @@ After opening the file add below IP and host-name.
 192.168.200.12  debian
 ```
 
-Create SSH key on ansible control node (ubuntu) and accept the defaults.
+Create SSH key on ansible control node (ubuntu) with below and accept the defaults.
 
 ```console
 ssh-keygen
@@ -97,7 +97,7 @@ ssh-copy-id -i .ssh/id_rsa.pub debian
 ssh-copy-id -i .ssh/id_rsa.pub centos
 ```
 
-Now ssh to debian and configure debian so that it doesn't require a password to get sudo level access.
+Now ssh to debian, and configure debian so that it doesn't require a password to get *sudo* level access.
 
 ```console
 ssh debian
@@ -110,7 +110,7 @@ Go to the bottom of the file and add this line as below:
 vagrant ALL=(ALL) NOPASSWD: ALL
 ```
 
-Now configure centos so that it doesn't require a password to get root-level access.
+Also, configure centos so that it doesn't require a password to get root-level access.
 
 ```console
 ssh centos
@@ -124,7 +124,7 @@ Go to the bottom of the file and add this line as below:
 vagrant ALL=(ALL) NOPASSWD: ALL
 ```
 
-### Inventory Set Up
+### Inventory Set-Up
 
 Ansible inventory files define managed nodes that ad-hoc/playbooks can be run against. I'm creating inventory in the ansible default location (/etc/ansible/hosts).
 
@@ -157,7 +157,7 @@ ansible -m ping all
 ansible all -a 'whoami'
 ```
 
-Elevate to root with -b for become. Why? Because Ansible doesn't elevate the sudo privilege by default.
+Elevate to root with -b for become. Why? Because Ansible doesn't elevate the *sudo* privilege by default.
 
 ```console
 ansible all -b -a 'whoami'
@@ -169,11 +169,13 @@ Some examples of ad-hoc commands are below:
 2. ansible all -a "whoami"
 3. ansible all -b -a "whoami"
 
-If you do not specify the, ***-m (module)***, the default ***command*** module will run.
+If you do not specify the ***-m (module)***, the default ***command*** module will run.
 
 ```console
 ansible all -m command -a 'echo Ansible is fun'
+```
 
+```JSON
 debian | CHANGED | rc=0 >>
 Ansible is fun
 centos | CHANGED | rc=0 >>
@@ -195,22 +197,29 @@ If I, remove the ***-m command*** from the above ad-hoc command it will also wor
 
 Modules are like the different tools, discrete units of code happen in ansible. Modules are invoked with tasks in playbooks or with the ansible ad hoc command -m argument.
 
-*command* The command will not be processed through the shell. Don't support pipes and redirects. After running the below command if you check the managed node home directory to see the hello.txt file, it will not create the file.
+#### Command 
+
+The command will not be processed through the shell. Don't support pipes and redirects. After running the below command if you check the managed node home directory to see the hello.txt file, it will not create the file.
 
 ```console
 ansible all -b -m command -a 'echo "Hello" > /home/vagrant/hello.txt'
+```
 
+```JSON
 debian | CHANGED | rc=0 >>
 Hello > /root/hello.txt
 centos | CHANGED | rc=0 >>
 Hello > /root/hello.txt
 ```
 
-***shell*** It is almost exactly like the command module but runs the command through a shell (/bin/sh) on the remote node. Support pips and redirection. After running the below command the hello.txt file is created.
+#### shell
+
+It is almost exactly like the command module but runs the command through a shell (/bin/sh) on the remote node. Support pips and redirection. After running the below command the hello.txt file is created.
 
 ```console
 ansible all -m shell -a 'echo "Hello" > /home/vagrant/hello.txt'
 
+```JSON
 debian | CHANGED | rc=0 >>
 
 centos | CHANGED | rc=0 >>
@@ -224,10 +233,15 @@ hello.txt
 [vagrant@centos ~]$
 ```
 
-***raw*** The raw module use SSH to executes commands on remote devices and doesn't require python, we use the raw module, for example, any devices such as routers that do not have any Python installed. It also Support pips and redirection.
+#### raw
+
+The raw module uses SSH to executes commands on remote devices and doesn't require python, we use the raw module, for example, any devices such as routers that do not have any Python installed. It also supports pips and redirection.
 
 ```console
 ansible all -m raw -a 'echo "Hello" >> /home/vagrant/hello.txt'
+```
+
+```JSON
 debian | CHANGED | rc=0 >>
 Shared connection to debian closed.
 
@@ -246,9 +260,17 @@ Hello
 [vagrant@centos ~]$
 ```
 
+Summarizes the difference between the three modules
+
+| Action | command | shell | raw |
+| ---	 | ---     | ---   | --- |  
+Run simple commands | yes | yes | yes
+Run commands with pip/redirection | no | yes | yes
+Run commands without Python | no | no | yes
+
 ### Ansible Modules Documentation
 
-If you want to how to use a specific module, then you can check with ***ansible-doc*** command followed by a module name.
+If you want to how to use a specific module, then you can check with the ***ansible-doc*** command followed by a module name.
 
 ```console
 vagrant@ubuntu:~$ ansible-doc ping
@@ -314,9 +336,9 @@ ping:
 
 ### Playbook
 
-A playbook defines a list of 'tasks' that will be executed against managed nodes. Each playbook contains one or more tasks which will be executed against the defined hosts group. Playbooks are written in [YAML](https://yaml.org/) which is an easy to read and write key/value data serialization language. YAML basic data types syntax as below:
+A playbook defines a list of 'tasks' that will be executed against managed nodes. Each playbook contains one or more tasks that will be executed against the defined host's group. Playbooks are written in [YAML](https://yaml.org/) which is easy to read and write key/value data serialization language. YAML basic data types syntax as below:
 
-```yaml
+```YAML
 # scalars/variables
 max_retry: 10
 database: user
@@ -336,7 +358,7 @@ employee:
 
 ### Playbook Examples
 
-```yaml
+```YAML
 ---
 - name: PLAYBOOK-1        
   hosts: linux
@@ -370,7 +392,7 @@ centos                     : ok=3    changed=2    unreachable=0    failed=0    s
 debian                     : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
-```yaml
+```YAML
 ---
 - name: PLAYBOOK-2
   hosts: linux
@@ -397,7 +419,9 @@ centos                     : ok=2    changed=1    unreachable=0    failed=0    s
 debian                     : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
-```yaml
+Using variables in the playbook as below:
+
+```YAML
 ---
 - hosts: linux
   vars:
@@ -493,7 +517,7 @@ ubuntu-64                  : ok=2    changed=0    unreachable=0    failed=0    s
 
 ### The When Statement
 
-Sometimes you will want to skip a particular step on a particular host. This is a easy task to do in Ansible with the *when* statement. To check ansible built-in variables use *gather_facts* module. The ad-hoc command as below.
+Sometimes you will want to skip a particular step on a particular host. This is an easy task to do in Ansible with the *when* statement. To check ansible built-in variables use the *gather_facts* module. The ad-hoc command is below.
 
 ```console
 ansible all -m gather_facts --limit centos | grep ansible_distribution
@@ -508,7 +532,7 @@ ansible all -m gather_facts --limit centos | grep ansible_distribution
 
 ```yml
 ---
-- name: Play-book with when statement
+- name: Play-book with when a statement
   hosts: linux
   become: true
   tasks:
