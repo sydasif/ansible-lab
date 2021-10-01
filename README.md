@@ -447,7 +447,7 @@ A playbook can have multiple plays and each play can in turn contains multiple t
 
 ```yml
 ---
-- name: Play-1.... 
+- name: Play-book to install packages 
   hosts: ubuntu
   become: true
   tasks: 
@@ -489,4 +489,59 @@ ok: [centos-7]
 PLAY RECAP ************************************************************************************************************
 centos-7                   : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 ubuntu-64                  : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+
+### The When Statement
+
+Sometimes you will want to skip a particular step on a particular host. This is a easy task to do in Ansible with the *when* statement. To check ansible built-in variables use *gather_facts* module. The ad-hoc command as below.
+
+```console
+ansible all -m gather_facts --limit centos | grep ansible_distribution
+        "ansible_distribution": "CentOS",
+        "ansible_distribution_file_parsed": true,
+        "ansible_distribution_file_path": "/etc/redhat-release",
+        "ansible_distribution_file_variety": "RedHat",
+        "ansible_distribution_major_version": "7",
+        "ansible_distribution_release": "Core",
+        "ansible_distribution_version": "7.8",
+```
+
+```yml
+---
+- name: Play-book with when statement
+  hosts: linux
+  become: true
+  tasks:
+
+    - name: Install git on ubuntu
+      apt:
+        name: git
+        state: latest
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Install git on centos
+      yum:
+        name: git
+        state: latest
+      when: ansible_distribution == "CentOS"
+```
+
+```JSON
+PLAY [Play-book with when statement] *******************************************************************************************
+
+TASK [Gathering Facts] *********************************************************************************************************
+ok: [centos-7]
+ok: [ubuntu-64]
+
+TASK [Install git on ubuntu] ***************************************************************************************************
+skipping: [centos-7]
+ok: [ubuntu-64]
+
+TASK [Install git on centos] ***************************************************************************************************
+skipping: [ubuntu-64]
+ok: [centos-7]
+
+PLAY RECAP *********************************************************************************************************************
+centos-7                   : ok=2    changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+ubuntu-64                  : ok=2    changed=1    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
 ```
