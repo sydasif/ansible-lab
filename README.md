@@ -521,6 +521,9 @@ Sometimes you will want to skip a particular step on a particular host. This is 
 
 ```console
 ansible all -m gather_facts --limit centos | grep ansible_distribution
+```
+
+```JSON
         "ansible_distribution": "CentOS",
         "ansible_distribution_file_parsed": true,
         "ansible_distribution_file_path": "/etc/redhat-release",
