@@ -6,25 +6,18 @@ Vagrant.require_version ">= 1.6.0"
 boxes = [
 
     {
-        :name => "centos",
+        :name => "centos-7",
         :eth1 => "192.168.200.10",
         :mem => "1024",
 	:cpu => "1",
         :image => "centos/7"
     },
     {
-        :name => "ubuntu",
+        :name => "ubuntu-64",
         :eth1 => "192.168.200.11",
         :mem => "1024",
 	:cpu => "1",
-        :image => "ubuntu/focal64"
-    },
-    {
-        :name => "debian",
-        :eth1 => "192.168.200.12",
-        :mem => "1024",
-	:cpu => "1",
-        :image => "debian/jessie64"
+        :image => "ubuntu/bionic64"
     }
 ]
 
@@ -39,6 +32,5 @@ Vagrant.configure(2) do |config|
       end
       config.vm.network :private_network, ip: opts[:eth1]
     end
-  end
-  config.vm.provision "shell", inline:"sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config"	
+    config.vm.provision "shell", inline:"sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config"
 end
