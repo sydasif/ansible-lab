@@ -1,0 +1,11 @@
+---
+- name: Play-1.... 
+  hosts: linux 
+  become: true
+  tasks: 
+    - name: Install git on ubuntu
+      package:
+        name: "{{ git_package }}"
+        state: latest
+        update_cache: yes
+    
