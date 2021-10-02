@@ -1,9 +1,14 @@
-[deb]
-debian  
+[ubuntu]
+ubuntu-64
 
-[cen]
-centos
+[centos]
+centos-7
 
 [linux:children]
-deb
-cen
+ubuntu
+centos
+
+[linux:vars]
+ansible_user=vagrant
+git_package=git
+
