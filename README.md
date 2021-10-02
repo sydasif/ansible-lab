@@ -42,7 +42,7 @@ Command after booting to check the status of devices:
 vagrant status
 ```
 
-Use ```vagrant ssh ubuntu-64``` command to ssh into a device and check ping to the other device. If any error with Vagrant ssh connection see this [Permission denied](https://stackoverflow.com/questions/36300446/ssh-permission-denied-publickey-gssapi-with-mic).
+Use ```vagrant ssh ubuntu-64``` command to ssh into a device and check ping to the other device. If any error with Vagrant ssh connection see this [Permission denied](https://stackoverflow.com/questions/36300446/ssh-permission-denied-publickey-gssapi-with-mic) guide on stackoverflow.
 
 ### Configuring Ansible Client
 
