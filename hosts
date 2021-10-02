@@ -1,8 +1,8 @@
 [ubuntu]
-ubuntu-64
+ubuntu-64 vim=vim-nox
 
 [centos]
-centos-7
+centos-7 vim=vim
 
 [linux:children]
 ubuntu
@@ -10,5 +10,3 @@ centos
 
 [linux:vars]
 ansible_user=vagrant
-git_package=git
-
