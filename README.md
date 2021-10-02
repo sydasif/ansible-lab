@@ -1,6 +1,6 @@
 # Ansible Client and Server Lab
 
-Ansible is an open-source, powerful, and simple tool for client-server and network device automation. To Installing Ansible, no special server or workstation is required. The only requirement is Python and SSH installed on the control node. Ansible is agent-less, which means nothing to install on a client only Python is installed and SSH is enabled. Ansible every time use SSH or paramiko, what it does on manage nodes. For manage nodes, in the case of networking devices python is not required in all cases.
+Ansible is an open-source, powerful, and simple tool for client-server and network device automation. To Installing Ansible, no special server or workstation is required. The only requirement is Python and SSH installed on the control node. Ansible is agent-less, which means nothing to install on a client only Python is installed and SSH is enabled. Ansible every time use SSH, API and paramiko, what it does on manage nodes. For manage nodes, in the case of networking devices python is not required in all cases.
 
 ## Ansible Installation
 
