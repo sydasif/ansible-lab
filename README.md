@@ -1,6 +1,6 @@
 # Ansible Client and Server Lab
 
-Ansible is an open-source, powerful, and simple tool for client-server and network device automation. To Installing Ansible, no special server or workstation is required. The only requirement is Python and SSH installed on the control node. Ansible is agent-less, which means nothing to install on a client only Python is installed and SSH is enabled on remote host. Ansible every time use SSH or in some cases API and paramiko, what it does on manage nodes. For manage nodes, in the case of networking devices python is not required in all cases.
+Ansible is an open-source, powerful, and simple tool for client-server and network device automation. To Installing Ansible, no special server or workstation is required. The only requirement is Python and SSH installed on the control node. Ansible is agent-less, which means nothing to install on a client only Python is installed and SSH is enabled on the remote host. Ansible every time use SSH or in some cases API and paramiko, what it does on manage nodes. For manage nodes, in the case of networking devices python is not required in all cases.
 
 ## Ansible Installation
 
@@ -42,7 +42,7 @@ Command after booting to check the status of devices:
 vagrant status
 ```
 
-Use ```vagrant ssh ubuntu-64``` command to ssh into a device and check ping to the other device. If any error with ssh connection, see this [Permission denied](https://stackoverflow.com/questions/36300446/ssh-permission-denied-publickey-gssapi-with-mic) guide on stackoverflow.
+Use ```vagrant ssh ubuntu-64``` command to ssh into a device and check ping to the other device. If any error with ssh connection, see this [Permission denied](https://stackoverflow.com/questions/36300446/ssh-permission-denied-publickey-gssapi-with-mic) guide on StackOverflow.
 
 ### Configuring Ansible Client
 
@@ -72,7 +72,7 @@ ssh-copy-id -i .ssh/id_rsa.pub ubuntu-64
 ssh-copy-id -i .ssh/id_rsa.pub centos-7
 ```
 
-Now ssh to Ubuntu-64, and configure the manage host, so that it doesn't require a password to get *sudo* level access.
+Now ssh to Ubuntu-64, and configure the managed host, so that it doesn't require a password to get *sudo* level access.
 
 ```console
 ssh ubuntu
@@ -310,7 +310,7 @@ AUTHOR: Ansible Core Team, Michael DeHaan
 
 EXAMPLES:
 
-# Test we can logon to 'webservers' and execute python with json lib.
+# Test we can logon to 'webservers' and execute python with JSON lib.
 # ansible webservers -m ping
 
 # Example from an Ansible Playbook
