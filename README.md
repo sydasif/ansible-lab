@@ -21,7 +21,7 @@ For managed nodes, Ansible makes a connection over SSH, Python and SSH client is
 
 I'm using Vagrant for my lab set-up, the process is simple as below:
 
-1. Go to the [Vagrant website](https://www.vagrantup.com/) and download vagrant and install it on your machine. For more details see [Quick Start Guide](https://learn.hashicorp.com/tutorials/vagrant/getting-started-index?in=vagrant/getting-started).
+1. Go to the [Vagrant website](https://www.vagrantup.com/) and download vagrant and install it on your machine. For more details see [Introduction to Vagrant](https://ayushsharma.in/2021/08/introduction-to-vagrant) and [Quick Start Guide](https://learn.hashicorp.com/tutorials/vagrant/getting-started-index?in=vagrant/getting-started).
 
 2. [Virtual box](https://www.virtualbox.org/wiki/Downloads).
 
@@ -334,7 +334,7 @@ ping:
 
 ### Playbook
 
-A playbook defines a list of 'tasks' that will be executed against managed nodes. Each playbook contains one or more tasks that will be executed against the defined host's group. Playbooks are written in [YAML](https://yaml.org/) which is easy to read and write key/value data serialization language. YAML basic data types syntax as below:
+A playbook defines a list of 'tasks' that will be executed against managed nodes. Each playbook contains one or more tasks that will be executed against the defined host's group. Playbooks are written in [YAML](https://yaml.org/) which is easy to read and write key/value data serialization language. [Intorduction to YAML](https://ayushsharma.in/2021/08/introduction-to-yaml) basic data types syntax as below:
 
 ```YAML
 # scalars/variables
