@@ -1,4 +1,4 @@
-# Ansible Client and Server Lab
+# Ansible Server Lab
 
 Ansible is an open-source, powerful, and simple tool for client-server and network device automation. To Installing Ansible, no special server or workstation is required. The only requirement is Python and SSH installed on the control node. Ansible is agent-less, which means nothing to install on a client only Python is installed and SSH is enabled on the remote host. Ansible every time use SSH or in some cases API and paramiko, what it does on manage nodes. For manage nodes, in the case of networking devices python is not required in all cases.
 
@@ -122,6 +122,7 @@ To test Ansible Installation, run the below commands:
 ansible --version
 ansible localhost -m ping
 ```
+
 ### Inventory Set-Up
 
 Ansible inventory files define managed nodes that ad-hoc command/playbooks can be run against. I'm creating inventory in the ansible default location (/etc/ansible/hosts).
@@ -195,7 +196,7 @@ If I, remove the ***-m command*** from the above ad-hoc command it will also wor
 
 Modules are like the different tools, discrete units of code happen in ansible. Modules are invoked with tasks in playbooks or with the ansible ad hoc command -m argument.
 
-#### Command 
+#### Command
 
 The command will not be processed through the shell. Don't support pipes and redirects. After running the below command if you check the managed node home directory to see the hello.txt file, it will not create the file.
 
@@ -332,28 +333,122 @@ ping:
 (END)
 ```
 
-### Playbook
+### Playbooks
 
-A playbook defines a list of 'tasks' that will be executed against managed nodes. Each playbook contains one or more tasks that will be executed against the defined host's group. Playbooks are written in [YAML](https://yaml.org/) which is easy to read and write key/value data serialization language. [Intorduction to YAML](https://ayushsharma.in/2021/08/introduction-to-yaml) basic data types syntax as below:
+Most of your time in Ansible will be spent writing playbooks. A playbook is a term that Ansible uses for a configuration management script. Ansible playbooks are written in YAML syntax. YAML is a file format similar in intent to JSON, but generally easier for humans to read and write. Before we go over the playbook, let’s cover the concepts of YAML that are most important for writing playbooks.
 
-```YAML
-# scalars/variables
-max_retry: 10
-database: user
+### Start of YAML File
 
-# mapping/dictionary
-animals:
-  name: cat
-  age: 4
+YAML files are supposed to start with three dashes to indicate the beginning of the document:
+
+```---```
+
+However, if you forget to put those three dashes at the top of your playbook files, Ansible won’t complain.
+
+### Comments
+
+Comments start with a number sign and apply to the end of the line, the same as in shell scripts, Python, and Ruby:
+
+```# This is a YAML comment```
+
+### Strings
+
+In general, YAML strings don’t have to be quoted, although you can quote them if you prefer. Even if there are spaces, you don’t need to quote them. For example, this is a string in YAML:
+
+```This is a lovely sentence```
+
+The JSON equivalent is as follows:
+
+```"this is a lovely sentence"```
+
+In some scenarios in Ansible, you will need to quote strings. These typically involve the use of {{ braces }} for variable substitution.
+
+### Booleans
+
+YAML has a native Boolean type and provides you with a wide variety of strings that can be interpreted as true or false. Personally, I always use True and False in my Ansible playbooks. For example, this is a Boolean in YAML:
+
+```True```
+
+The JSON equivalent is this:
+
+```true```
+
+### Lists
+
+YAML lists are like arrays in JSON and Ruby or lists in Python. Technically, these are called sequences in YAML, but I call them lists here to be consistent with the official Ansible documentation. They are delimited with hyphens, like this:
+
+```yml
+- My Fair Lady
+- Oklahoma
+- The Pirates of Penzance
+```
+
+The JSON equivalent is shown here:
+
+```json
+[
+"My Fair Lady",
+"Oklahoma",
+"The Pirates of Penzance"
+]
+```
+
+(Note again that we don’t have to quote the strings in YAML, even though they have spaces in them.) YAML also supports an inline format for lists, which looks like this:
+
+```[My Fair Lady, Oklahoma, The Pirates of Penzance]```
+
+### Dictionaries
+
+YAML dictionaries are like objects in JSON, dictionaries in Python, or hashes in Ruby. Technically, these are called mappings in YAML, but I call them dictionaries here to be consistent with the official Ansible documentation. They look like this:
+
+```yml
+address: 742 Evergreen Terrace
+city: Springfield
+state: North Takoma
+```
+
+The JSON equivalent is shown here:
+
+```json
+{
+"address": "742 Evergreen Terrace",
+"city": "Springfield",
+"state": "North Takoma"
+}
+```
+
+YAML also supports an inline format for dictionaries, which looks like this:
+
+```{address: 742 Evergreen Terrace, city: Springfield, state: North Takoma}```
+
+### Line Folding
+
+When writing playbooks, you’ll often encounter situations where you’re passing many arguments to a module. For aesthetics, you might want to break this up across multiple lines in your file, but you want Ansible to treat the string as if it were a single line.
+
+You can do this with YAML by using the line folding with the greater than ( > ) character. The YAML parser will replace line breaks with spaces. For example:
+
+```yml
+address: >
+Department of Computer Science,
+A.V. Williams Building,
+University of Maryland
+city: College Park
+state: Maryland
+```
+
+The JSON equivalent is as follows:
+
+```json
+{
+"address": "Department of Computer Science, A.V. Williams Building,
+University of Maryland",
+"city": "College Park",
+"state": "Maryland"
+}
+```
+
+[YAML](https://yaml.org/) is easy to read and write key/value data serialization language.
   
-# sequence/list
-employee:
-  - age: 26
-    name: Joe
-  - age: 34
-    name: Tim    
-```  
-
 ### Playbook Examples
 
 ```YAML
