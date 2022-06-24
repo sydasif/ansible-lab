@@ -2,6 +2,42 @@
 
 Ansible is an open-source, powerful, and simple tool for client-server and network device automation. To Installing Ansible, no special server or workstation is required. The only requirement is Python and SSH installed on the control node. Ansible is agent-less, which means nothing to install on a client only Python is installed and SSH is enabled on the remote host. Ansible every time use SSH or in some cases API and paramiko, what it does on manage nodes. For manage nodes, in the case of networking devices python is not required in all cases.
 
+**How Ansible Works**:- Ansible will do the following.
+
+1. Generate a Python script
+2. Copy the script to the remote node
+3. Execute the script on a remote node
+4. Wait for the script to complete execution on all hosts
+5. Remove the script from the remote node
+
+Ansible will then move to the next task in the list, and go through these same steps. It’s important to note the following:
+
+* Ansible runs each task in parallel across all hosts.
+* Ansible waits until all hosts have completed a task before moving to the next task.
+* Ansible runs the tasks in the order that you specify them.
+
+## What’s So Great About Ansible?
+
+1. Easy-to-Read Syntax
+2. Nothing to Install on the Remote Hosts
+3. Push Based
+4. Built-in Modules
+
+## What Do I Need to Know?
+
+To be productive with Ansible, you need to be familiar with basic Linux system administration tasks Ansible makes it easy to automate your tasks, and that they would know how to:
+
+* Connect to a remote machine using SSH
+* Interact with the Bash command-line shell (pipes and redirection)
+* Install packages
+* Use the sudo command
+* Check and set file permissions
+* Start and stop services
+* Set environment variables
+* Write scripts (any language)
+
+If these concepts are all familiar to you, you’re good to go with Ansible.
+
 ## Ansible Installation
 
 ### Control node requirement
@@ -17,7 +53,9 @@ For managed nodes, Ansible makes a connection over SSH, Python and SSH client is
 1. VMware or Virtual box
 2. Vagrant
 
-### Lab set-up
+### Using Vagrant to Set Up a Test Server
+
+Vagrant is an excellent open-source tool for managing virtual machines. You can use Vagrant to boot a Linux virtual machine inside your laptop, and you can use that as a test server.
 
 I'm using Vagrant for my lab set-up, the process is simple as below:
 
@@ -44,7 +82,7 @@ vagrant status
 
 Use ```vagrant ssh ubuntu-64``` command to ssh into a device and check ping to the other device. If any error with ssh connection, see this [Permission denied](https://stackoverflow.com/questions/36300446/ssh-permission-denied-publickey-gssapi-with-mic) guide on StackOverflow.
 
-### Configuring Ansible Client
+#### Configuring Ansible Client
 
 I have two Vagrant hosts ubuntu-64, centos-7 and Ansible control node(my own pc). On the control node (Ubuntu), edit the host's file for IP to name resolution.
 

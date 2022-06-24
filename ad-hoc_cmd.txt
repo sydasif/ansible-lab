@@ -1,0 +1,19 @@
+# for help
+ansible --help
+
+# for help on module
+ansible-doc <module_name>
+
+# for ping commnad
+ansible all -m ping
+
+# to check hosts
+ansible all --list-hosts
+
+# Misc commands
+ansible ubuntu-20 -b -m apt -a "name=vim state=present" 
+ansible all -b -m copy -a "content='This file was configured by ansible' dest=/etc/motd"
+ansible all -m shell -a "cat /etc/motd"
+ansible all -b -m copy -a "content='# This file was configured by ansible #' dest=/etc/motd" --check 
+ansible all -b -m copy -a "content='# This file was configured by ansible #' dest=/etc/motd" --diff
+ansible all -b -m copy -a "content='# This file was configured by ansible #' dest=/etc/motd" --check --diff
